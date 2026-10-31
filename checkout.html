@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Complete Delivery Address | NR TOYS</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: Arial, sans-serif; }
+    body { background: #fffaf4; color: #25283d; padding: 20px; }
+    .container { max-width: 550px; margin: 30px auto; background: white; padding: 30px; border-radius: 18px; box-shadow: 0 5px 25px rgba(0,0,0,0.08); }
+    h2 { color: #173653; margin-bottom: 8px; text-align: center; }
+    p.subtitle { text-align: center; color: #666; font-size: 14px; margin-bottom: 25px; }
+    
+    .form-row { display: flex; gap: 15px; }
+    .form-group { margin-bottom: 18px; flex: 1; }
+    
+    label { display: block; margin-bottom: 6px; font-weight: bold; font-size: 14px; color: #333; }
+    input, textarea { width: 100%; padding: 12px 14px; border: 1px solid #ddd; border-radius: 10px; font-size: 14px; outline: none; background: #fafafa; transition: border-color 0.3s; }
+    
+    /* Validation Classes */
+    input.valid, textarea.valid { border-color: #2e7d32 !important; background: #f1f8f6; }
+    input.invalid, textarea.invalid { border-color: #d32f2f !important; background: #fdf2f2; }
+
+    textarea { resize: vertical; height: 80px; }
+
+    /* Location Button Style */
+    .location-btn {
+      width: 100%;
+      padding: 10px;
+      background: #eaf5ff;
+      color: #173653;
+      border: 1px dashed #173653;
+      border-radius: 8px;
+      font-weight: bold;
+      cursor: pointer;
+      margin-bottom: 15px;
+      font-size: 13px;
+    }
+    .location-btn:hover { background: #d6ecff; }
+    
+    .btn { width: 100%; padding: 15px; background: #ff6b35; color: white; border: none; border-radius: 10px; font-size: 16px; font-weight: bold; cursor: pointer; margin-top: 10px; }
+    .btn:hover { opacity: 0.9; }
+    
+    .back-link { display: block; text-align: center; margin-top: 20px; color: #173653; text-decoration: none; font-weight: bold; font-size: 14px; }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h2>📍 Complete Delivery Address</h2>
+    <p class="subtitle">Sahi pata aur location bharein taaki courier ya delivery mein aasani ho.</p>
+    
+    <form onsubmit="submitOrder(event)">
+      <div class="form-group">
+        <label for="name">Full Name (पूरा नाम) *</label>
+        <input type="text" id="name" required placeholder="Aapka naam" oninput="validateField(this, /^[a-zA-Z\s]{3,}$/)">
+      </div>
+
+      <div class="form-group">
+        <label for="phone">Mobile Number (मोबाइल / WhatsApp नंबर) *</label>
+        <input type="tel" id="phone" required maxlength="10" placeholder="10 digit mobile number" oninput="validateField(this, /^[6-9]\d{9}$/)">
+      </div>
+
+      <!-- GPS Location Button -->
+      <button type="button" class="location-btn" onclick="getLocation()">📍 Get Current Location (GPS)</button>
+      <input type="hidden" id="latLong" value="">
+
+      <div class="form-group">
+        <label for="address">House No. / Street / Landmark (मकान नंबर, गली, आसपास की जगह) *</label>
+        <textarea id="address" required placeholder="Jaise: House No. 12, Near Hanuman Mandir, Main Road..." oninput="validateField(this, /^.{5,}$/)"></textarea>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="city">City / District (शहर / जिला) *</label>
+          <input type="text" id="city" required placeholder="City or District" oninput="validateField(this, /^[a-zA-Z\s]{2,}$/)">
+        </div>
+        <div class="form-group">
+          <label for="state">State (राज्य) *</label>
+          <input type="text" id="state" required placeholder="State name" oninput="validateField(this, /^[a-zA-Z\s]{2,}$/)">
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="pincode">Pincode (पिनकोड) *</label>
+          <input type="text" id="pincode" required maxlength="6" placeholder="6 digit pincode" oninput="validateField(this, /^\d{6}$/)">
+        </div>
+      </div>
+
+      <button type="submit" class="btn">Confirm & Order on WhatsApp 🚀</button>
+    </form>
+    
+    <a href="index.html" class="back-link">← Back to Shop</a>
+  </div>
+
+  <script>
+    const WHATSAPP_NUMBER = "919263166129";
+    let gpsLocationUrl = "";
+
+    // Live Validation Function for Green/Red Border
+    function validateField(input, regex) {
+      if (regex.test(input.value.trim())) {
+        input.classList.remove("invalid");
+        input.classList.add("valid");
+      } else {
+        input.classList.remove("valid");
+        input.classList.add("invalid");
+      }
+    }
+
+    function getLocation() {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            const lat = position.coords.latitude;
+            const lng = position.coords.longitude;
+            gpsLocationUrl = `https://maps.google.com/?q=${lat},${lng}`;
+            alert("✅ Location successfully captured!");
+          },
+          (error) => {
+            alert("❌ Location access denied or unavailable. Please type address manually.");
+          }
+        );
+      } else {
+        alert("Geolocation is not supported by this browser.");
+      }
+    }
+
+    function submitOrder(event) {
+      event.preventDefault();
+      
+      const name = document.getElementById("name").value.trim();
+      const phone = document.getElementById("phone").value.trim();
+      const address = document.getElementById("address").value.trim();
+      const city = document.getElementById("city").value.trim();
+      const state = document.getElementById("state").value.trim();
+      const pincode = document.getElementById("pincode").value.trim();
+
+      // Final Check before submitting
+      if (!/^[6-9]\d{9}$/.test(phone)) {
+        alert("Kripya 10 anko ka sahi mobile number bharein!");
+        document.getElementById("phone").focus();
+        return;
+      }
+
+      if (!/^\d{6}$/.test(pincode)) {
+        alert("Kripya 6 anko ka sahi Pincode bharein!");
+        document.getElementById("pincode").focus();
+        return;
+      }
+
+      let cart = [];
+      try {
+        cart = JSON.parse(localStorage.getItem("nrToysCart")) || [];
+      } catch (e) {
+        cart = [];
+      }
+
+      if(cart.length === 0) {
+        alert("Aapka cart khali hai!");
+        window.location.href = "index.html";
+        return;
+      }
+
+      const lines = cart.map(p => `${p.name} x ${p.qty} = ₹${p.price * p.qty}`).join("\n");
+      const total = cart.reduce((sum, p) => sum + (p.price * p.qty), 0);
+
+      let message = `🛍️ *New Order - NR Toys* 🧸\n\n👤 *Customer:* ${name}\n📞 *Mobile:* ${phone}\n\n📍 *Delivery Address:*\n${address}\n🏙️ *City/District:* ${city}\n🌍 *State:* ${state}\n📮 *Pincode:* ${pincode}`;
+      
+      if(gpsLocationUrl) {
+        message += `\n🗺️ *GPS Location Map:* ${gpsLocationUrl}`;
+      }
+
+      message += `\n\n📦 *Items:*\n${lines}\n\n💰 *Total Amount:* ₹${total}\n\nPlease confirm this order!`;
+
+      window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=` + encodeURIComponent(message), '_blank');
+    }
+  </script>
+</body>
+</html>
