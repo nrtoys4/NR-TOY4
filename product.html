@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Product Details | NR TOYS</title>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      background: #fffaf4;
+      color: #25283d;
+    }
+
+    header {
+      background: #fff;
+      padding: 15px 6%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 15px;
+      flex-wrap: wrap;
+      box-shadow: 0 2px 10px #00000010;
+    }
+
+    .logo {
+      font-size: 27px;
+      font-weight: bold;
+      color: #ff6b35;
+    }
+
+    .logo span {
+      color: #173653;
+    }
+
+    .search {
+      display: flex;
+      flex: 1;
+      max-width: 350px;
+    }
+
+    .search input {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid #ddd;
+      border-radius: 10px 0 0 10px;
+      outline: none;
+    }
+
+    .search button {
+      background: #173653;
+      color: white;
+      border: 0;
+      padding: 10px 15px;
+      border-radius: 0 10px 10px 0;
+      cursor: pointer;
+    }
+
+    header a.back-link {
+      text-decoration: none;
+      color: #25283d;
+      font-weight: bold;
+    }
+
+    .breadcrumb {
+      padding: 20px 6%;
+      color: #777;
+      font-size: 14px;
+    }
+
+    .product-container {
+      max-width: 1100px;
+      margin: 15px auto 50px;
+      padding: 25px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 45px;
+      background: white;
+      border-radius: 18px;
+      box-shadow: 0 5px 25px #00000008;
+    }
+
+    /* Swipeable Image Slider Container */
+    .image-slider-container {
+      position: relative;
+    }
+
+    .swipe-slider {
+      display: flex;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      gap: 15px;
+      scrollbar-width: none;
+      border-radius: 15px;
+      background: #fff7eb;
+    }
+
+    .swipe-slider::-webkit-scrollbar {
+      display: none;
+    }
+
+    .swipe-slider img {
+      width: 100%;
+      height: 400px;
+      object-fit: contain;
+      flex-shrink: 0;
+      scroll-snap-align: start;
+      border-radius: 15px;
+      cursor: grab;
+    }
+
+    .floating-actions {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      z-index: 10;
+    }
+
+    .icon-btn {
+      width: 44px;
+      height: 44px;
+      background: white;
+      border: none;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+      cursor: pointer;
+      display: grid;
+      place-items: center;
+      font-size: 20px;
+      transition: transform 0.2s;
+    }
+
+    .icon-btn:hover {
+      transform: scale(1.1);
+    }
+
+    .thumbs {
+      display: flex;
+      gap: 10px;
+      margin-top: 12px;
+      flex-wrap: wrap;
+    }
+
+    .thumbs img {
+      width: 75px;
+      height: 75px;
+      object-fit: contain;
+      border: 1px solid #ddd;
+      border-radius: 9px;
+      padding: 5px;
+      cursor: pointer;
+    }
+
+    .thumbs img:hover {
+      border: 2px solid #ff6b35;
+    }
+
+    .tag {
+      display: inline-block;
+      background: #e4f8e8;
+      color: #167b35;
+      padding: 7px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      margin-bottom: 10px;
+    }
+
+    h1 {
+      font-size: 30px;
+      margin-bottom: 8px;
+    }
+
+    .rating-badge {
+      display: inline-flex;
+      align-items: center;
+      background: #ffffff;
+      border: 1px solid #e0e0e0;
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-weight: bold;
+      font-size: 15px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+      margin-bottom: 15px;
+    }
+
+    .rating-badge span.star {
+      color: #26a54b;
+      margin-left: 4px;
+    }
+
+    .rating-badge span.count {
+      color: #777;
+      font-weight: normal;
+      margin-left: 8px;
+      padding-left: 8px;
+      border-left: 1px solid #ccc;
+    }
+
+    .price {
+      color: #333;
+      font-size: 30px;
+      font-weight: bold;
+      margin-bottom: 8px;
+    }
+
+    .old-price {
+      color: #ff6b35;
+      text-decoration: line-through;
+      font-size: 17px;
+      margin-left: 8px;
+      font-weight: normal;
+    }
+
+    .description {
+      color: #666;
+      line-height: 1.7;
+      margin: 15px 0;
+    }
+
+    .detail-list {
+      line-height: 2;
+      margin: 15px 0 20px;
+      list-style: none;
+    }
+
+    .btn {
+      width: 100%;
+      padding: 15px;
+      margin-top: 12px;
+      border: none;
+      border-radius: 10px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .buy-btn {
+      background: #ff6b35;
+      color: white;
+    }
+
+    .btn:hover {
+      opacity: 0.88;
+    }
+
+    .customer-reviews-section {
+      margin-top: 25px;
+      background: #fff8f5;
+      padding: 15px;
+      border-radius: 12px;
+      border: 1px solid #ffe0d0;
+    }
+
+    .customer-reviews-section h4 {
+      font-size: 15px;
+      margin-bottom: 10px;
+      color: #333;
+    }
+
+    .customer-photos {
+      display: flex;
+      gap: 10px;
+    }
+
+    .customer-photos img {
+      width: 70px;
+      height: 70px;
+      object-fit: cover;
+      border-radius: 8px;
+      border: 2px solid #ff6b35;
+    }
+
+    footer {
+      background: #25283d;
+      color: white;
+      text-align: center;
+      padding: 25px;
+      margin-top: 40px;
+    }
+
+    @media (max-width: 700px) {
+      .product-container {
+        grid-template-columns: 1fr;
+        margin: 10px;
+        padding: 16px;
+        gap: 25px;
+      }
+      .swipe-slider img {
+        height: 300px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <header>
+    <div class="logo">NR <span>TOYS</span></div>
+    
+    <form class="search" onsubmit="handleSearch(event)">
+      <input id="searchInput" placeholder="Search toys..." aria-label="Search toys">
+      <button type="submit">🔍</button>
+    </form>
+
+    <a href="index.html" class="back-link">← Back to Shop</a>
+  </header>
+
+  <div class="breadcrumb">
+    Home / Toys / <span id="breadcrumbName">Product Details</span>
+  </div>
+
+  <main class="product-container">
+
+    <section>
+      <div class="image-slider-container">
+        <div class="floating-actions">
+          <button class="icon-btn" onclick="addToWishlist()" title="Add to Wishlist">❤️</button>
+          <button class="icon-btn" onclick="shareOnWhatsApp()" title="Share">📤</button>
+        </div>
+
+        <div class="swipe-slider" id="imageSlider">
+          <!-- Dynamic Images will load here -->
+        </div>
+      </div>
+
+      <div class="thumbs" id="thumbContainer">
+         <!-- Dynamic Thumbnails will load here -->
+      </div>
+    </section>
+
+    <section>
+      <span class="tag">✨ Featured Product</span>
+
+      <h1 id="productName">Kids Painting Kit</h1>
+
+      <div class="rating-badge">
+        4.2 <span class="star">★</span> <span class="count">696 Reviews</span>
+      </div>
+
+      <div class="price">
+        ₹<span id="price">100</span>
+      </div>
+
+      <div class="description">
+        <p id="productDesc">अपने कमरे की सजावट में एक पर्सनल टच जोड़ें या हमारे कस्टम नेम डिस्प्ले सेट के साथ किसी खास को सरप्राइज दें!</p>
+        <ul style="margin-left: 20px; margin-top: 10px;">
+          <li>हैंडमेड परफेक्शन: हर एक अक्षर को सावधानी से मोल्ड किया जाता है।</li>
+          <li>मल्टीपर्पस डेकोर: बच्चों की स्टडी टेबल, रूम नेमप्लेट या बुकशेल्फ़ के लिए बेस्ट।</li>
+          <li>कस्टमाइज़ेशन: अपनी पसंद का कोई भी नाम हमारे साथ तैयार करवाएं!</li>
+          <li>🎁 आकर्षक विंडो गिफ्ट बॉक्स पैकेजिंग साथ में मिलती है।</li>
+        </ul>
+      </div>
+
+      <div class="customer-reviews-section">
+        <h4>📸 Customer Photos (Real Buyers)</h4>
+        <div class="customer-photos" id="customerPhotos">
+          <!-- Dynamic Review Photos -->
+        </div>
+      </div>
+
+      <ul class="detail-list" style="margin-top: 15px;">
+        <li>✅ Brand: NR TOYS</li>
+        <li>✅ Category: Art & Craft</li>
+        <li>✅ Suitable for: Kids and everyone</li>
+      </ul>
+
+      <!-- Buy Now redirects to checkout.html -->
+      <button class="btn buy-btn" onclick="buyNow()">Order on WhatsApp</button>
+    </section>
+
+  </main>
+
+  <footer>
+    <h3>NR TOYS</h3>
+    <p>Play • Learn • Grow</p>
+    <p>© 2026 NR TOYS. All rights reserved.</p>
+  </footer>
+
+  <script>
+    const productsDB = {
+      "1": { name: "DIY TOY", price: 100, images: ["Img.png"], desc: "Handmade DIY painting kit with beautiful flower and toy molds." },
+      "2": { name: "DIY FLOWER", price: 100, images: ["Img2.png"], desc: "Exciting DIY Tiger white cement moulding figurine for kids." },
+      "3": { name: "name any", price: 150, images: ["Img3.png", "Img3A.png", "Img3B.png"], desc: "Custom name letters display set for room decoration." },
+      "4": { name: "cake decoration", price: 150, images: ["Img4.png", "ImgA.png"], desc: "Beautiful custom cake toppers and decorations." },
+      "5": { name: "happybirthday", price: 250, images: ["Img5.png", "ImgB.png", "ImgC.png"], desc: "Happy birthday special craft set." },
+      "6": { name: "LOVE", price: 150, images: ["Img6.png", "ImgE.png"], desc: "Love theme handmade showpiece kit." }, 
+      "7": { name: "Haldi", price: 199, images: ["ImgD.png"], desc: "Haldi wedding photography." },
+      "8": { name: "MEHNDI", price: 199, images: ["ImgF.png"], desc: "Mehndi wedding photography." }
+    };
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const productId = urlParams.get('id') || "3";
+    const currentProduct = productsDB[productId] || productsDB["3"];
+
+    document.getElementById("productName").textContent = currentProduct.name;
+    document.getElementById("breadcrumbName").textContent = currentProduct.name;
+    document.getElementById("price").textContent = currentProduct.price;
+    document.getElementById("productDesc").textContent = currentProduct.desc;
+
+    // Render Slider Images & Thumbs
+    const sliderContainer = document.getElementById("imageSlider");
+    const thumbContainer = document.getElementById("thumbContainer");
+    const customerPhotos = document.getElementById("customerPhotos");
+
+    sliderContainer.innerHTML = currentProduct.images.map(img => `<img src="${img}" alt="Product">`).join("");
+    thumbContainer.innerHTML = currentProduct.images.map((img, index) => `<img src="${img}" alt="Thumb" onclick="scrollToImage(${index})">`).join("");
+    customerPhotos.innerHTML = currentProduct.images.slice(0, 2).map(img => `<img src="${img}" alt="Review Photo">`).join("");
+
+    function scrollToImage(index) {
+      const slider = document.getElementById("imageSlider");
+      const images = slider.querySelectorAll("img");
+      if(images[index]) {
+        images[index].scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+      }
+    }
+
+    function buyNow() {
+      // Save single item to localStorage cart and go to checkout.html
+      const singleItem = [{
+        id: Number(productId),
+        name: currentProduct.name,
+        price: Number(currentProduct.price),
+        image: currentProduct.images[0],
+        qty: 1
+      }];
+      localStorage.setItem("nrToysCart", JSON.stringify(singleItem));
+      window.location.href = "checkout.html";
+    }
+
+    function addToWishlist() {
+      alert(`❤️ ${currentProduct.name} ko wishlist me save kar liya gaya hai!`);
+    }
+
+    function shareOnWhatsApp() {
+      const shareText = `Check out this amazing toy from NR Toys!\n\n🧸 *${currentProduct.name}*\n💰 Price: ₹${currentProduct.price}\n\nLink: ${window.location.href}`;
+      window.open(`https://api.whatsapp.com/send?text=` + encodeURIComponent(shareText), '_blank');
+    }
+
+    function handleSearch(event) {
+      event.preventDefault();
+      const query = document.getElementById("searchInput").value;
+      if (query.trim()) {
+        window.location.href = `index.html?search=` + encodeURIComponent(query);
+      }
+    }
+  </script>
+
+</body>
+</html>
